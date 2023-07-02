@@ -2,13 +2,11 @@ require("@nomicfoundation/hardhat-toolbox")
 require("etherscan")
 require("hardhat-gas-reporter")
 require("hardhat-deploy")
-
 require("dotenv").config()
 
 const SEPOLIA_RPC_URL = process.env.SEPOLIA_RPC_URL
 const PRIVATE_KEY_1 = process.env.PRIVATE_KEY_1
-const ETHERSCAN_API = process.env.ETHERSCAN_API
-const COINMARKETCAP_API = process.env.COINMARKETCAP_API
+// const COINMARKETCAP_API = process.env.COINMARKETCAP_API
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -24,9 +22,6 @@ module.exports = {
             blockConfirmation: 6,
         },
     },
-    etherscan: {
-        apiKey: ETHERSCAN_API,
-    },
     namedAccounts: {
         deployer: {
             default: 0,
@@ -40,7 +35,7 @@ module.exports = {
         noColors: true,
         outputFile: "gasReporter.txt",
         currency: "USD",
-        coinmarketcap: COINMARKETCAP_API,
+        // coinmarketcap: COINMARKETCAP_API,
         token: "ETH",
     },
 }

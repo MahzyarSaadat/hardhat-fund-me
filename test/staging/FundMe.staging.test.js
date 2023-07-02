@@ -1,24 +1,25 @@
-const { ethers, getNamedAccounts, network } = require("hardhat")
-const { deploymentsChians } = require("../../helper-hardhat-config")
 const { assert } = require("chai")
-
+const { ethers, getNamedAccounts, network, deployments } = require("hardhat")
+const { deploymentsChians } = require("../../helper-hardhat-config")
 deploymentsChians.includes(network.name)
     ? describe.skip
     : describe("FundMe", function () {
-          let fundMe, deployer
-          let sendEther = ethers.utils.parseEther("1")
-          beforeEach(async () => {
+          let fundme, deployer
+          const ethAmount = ethers.utils.parseEther("1")
+          this.beforeEach(async () => {
               deployer = (await getNamedAccounts()).deployer
-              // let deployer = await getNamedAccounts.deployer
-              fundMe = await ethers.getContract("FundMe", deployer)
+              await deployments.fixture(["all"])
+              fundme = await ethers.getContract("FundMe", deployer)
+              await fundme.deployed()
           })
 
           it("allows people to fund and withdraw", async () => {
-              await fundMe.fundMe({ value: sendEther })
-              await fundMe.withdraw()
+              await fundme.fund({ value: ethAmount })
+              const transactionResponse = await fundme.withdraw()
+              await transactionResponse.wait(1)
               const endingBalance = await ethers.provider.getBalance(
-                  fundMe.address
+                  fundme.address
               )
-              assert(endingBalance.toString(), "0")
+              assert.equal(endingBalance.toString(), "0")
           })
       })

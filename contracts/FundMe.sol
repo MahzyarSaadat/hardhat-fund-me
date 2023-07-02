@@ -68,6 +68,14 @@ contract FundMe {
         require(success, "call fail");
     }
 
+    receive() external payable {
+        fundMe();
+    }
+
+    fallback() external payable {
+        fundMe();
+    }
+
     function getOwner() public view returns (address) {
         return i_owner;
     }
